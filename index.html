@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TikTok Live Followers Counter & Tracker</title>
-  <meta name="monetag" content="10e6229606efa930b434cd45ad33fce6">
-
+  
   <meta name="description" content="Free Real-Time TikTok Live Follower Counter & Stats Tracker">
   <meta name="theme-color" content="#fe2c55">
+
+  <!-- یہاں آپ Adsterra کا کوڈ لگائیں گے -->
+  <!-- ADSTERRA CODE HERE -->
 
   <style>
     :root {
@@ -26,25 +28,23 @@
     .header h1 { font-size: 26px; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .header h1 span { background: linear-gradient(45deg, var(--secondary), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     
-    /* Top Sponsored Ad Button */
-    .top-ad-banner {
+    /* اشتہار کی جگہ (Ad Placeholder) */
+    .ad-container {
       width: 100%;
       max-width: 420px;
-      background: linear-gradient(90deg, rgba(254,44,85,0.2), rgba(37,244,238,0.2));
-      border: 1px dashed var(--secondary);
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed #333;
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 8px;
       margin-bottom: 14px;
+      text-align: center;
+      font-size: 11px;
+      color: #777;
+      min-height: 50px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      text-decoration: none;
-      color: #fff;
-      font-size: 13px;
-      cursor: pointer;
+      justify-content: center;
     }
-    .top-ad-banner span { font-weight: bold; color: var(--secondary); }
-    .ad-badge { background: var(--primary); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
 
     .search-box { width: 100%; max-width: 420px; display: flex; gap: 8px; margin-bottom: 16px; }
     .search-box input { flex: 1; padding: 12px 16px; border-radius: 25px; border: 1px solid #333; background: var(--card-bg); color: #fff; font-size: 15px; outline: none; }
@@ -69,7 +69,6 @@
     .status-dot { height: 8px; width: 8px; background-color: #4ade80; border-radius: 50%; display: inline-block; animation: blink 1.5s infinite; }
     @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-    /* Action / Monetized Buttons */
     .btn-action {
       width: 100%;
       background: #25D366;
@@ -87,23 +86,7 @@
       justify-content: center;
       gap: 6px;
     }
-    .btn-sponsor {
-      width: 100%;
-      background: #1f1f28;
-      border: 1px solid #333;
-      color: #ffd700;
-      padding: 11px;
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
+    
     .error-msg { color: #ff4d4d; font-size: 13px; margin-top: 10px; display: none; }
   </style>
 </head>
@@ -113,15 +96,14 @@
     <h1><span>TikTok</span> Live Counter</h1>
   </div>
 
-  <!-- Top Ad Link (Direct monetag earning) -->
-  <a href="https://uplcm.com/4/12177479" target="_blank" class="top-ad-banner">
-    <div><span class="ad-badge">HOT</span> 🚀 Boost TikTok Followers Fast</div>
-    <span>Check &raquo;</span>
-  </a>
+  <!-- اوپر والا اشتہار (Adsterra Banner) -->
+  <div class="ad-container">
+    Sponsored Ad
+  </div>
 
   <div class="search-box">
     <input type="text" id="usernameInput" placeholder="Enter TikTok username" value="ethan_henry3" onkeydown="if(event.key==='Enter') fetchStats()" />
-    <button id="searchBtn" onclick="onSearchClick()">Search</button>
+    <button id="searchBtn" onclick="fetchStats()">Search</button>
   </div>
 
   <div class="card">
@@ -131,16 +113,16 @@
     
     <div class="counter-hero">
       <div class="counter-title">Live Followers</div>
-      <div class="counter-value" id="followersCount">546</div>
+      <div class="counter-value" id="followersCount">0</div>
     </div>
     
     <div class="stats-grid">
       <div class="stat-box">
-        <div class="num" id="likesCount">2,548</div>
+        <div class="num" id="likesCount">0</div>
         <div class="label">Total Likes</div>
       </div>
       <div class="stat-box">
-        <div class="num" id="followingCount">7</div>
+        <div class="num" id="followingCount">0</div>
         <div class="label">Following</div>
       </div>
     </div>
@@ -149,38 +131,22 @@
       <span class="status-dot"></span> Live auto-refresh active
     </div>
 
-    <!-- Monetized Actions -->
     <button class="btn-action" onclick="onShareClick()">
       📲 Share Profile & Live Stats
     </button>
-    <a href="https://uplcm.com/4/12177479" target="_blank" class="btn-sponsor">
-      ⭐ Free TikTok Growth Tools (Sponsored)
-    </a>
 
     <div class="error-msg" id="errorMsg">Account not found or network error.</div>
   </div>
 
+  <!-- نیچے والا اشتہار (Adsterra Banner) -->
+  <div class="ad-container" style="margin-top: 16px;">
+    Advertisement
+  </div>
+
   <script>
-    // YOUR MONETAG DIRECT AD LINK
-    const MONETAG_AD_URL = "https://uplcm.com/4/12177479";
-
     let intervalId = null;
-    let clickCount = 0;
-
-    // Trigger ad opening every few searches to monetize visitors
-    function onSearchClick() {
-      clickCount++;
-      if (clickCount % 2 === 0) {
-        // Opens your ad in a new background tab
-        window.open(MONETAG_AD_URL, '_blank');
-      }
-      fetchStats();
-    }
 
     function onShareClick() {
-      // Open Monetag Ad first (earns money)
-      window.open(MONETAG_AD_URL, '_blank');
-      // Then open WhatsApp share
       const shareText = "Check your live TikTok followers & statistics in real-time here: " + window.location.href;
       window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(shareText), "_blank");
     }
@@ -220,7 +186,7 @@
           errorMsg.style.display = "block";
         }
       } catch(e) {
-        // Fallback display if API temporarily blocked by CORS
+        errorMsg.style.display = "block";
       } finally {
         searchBtn.innerText = "Search";
       }
